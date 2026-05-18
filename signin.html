@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign In — Nexus</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --display: 'Instrument Serif', serif;
+  --sans: 'Geist', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --bg: #07070a;
+  --bg-elev: #0d0d12;
+  --surface: rgba(255,255,255,0.04);
+  --surface-strong: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.14);
+  --text: #f5f5f7;
+  --text-dim: #a1a1aa;
+  --text-mute: #6b6b75;
+  --accent: #d4ff3c;
+  --accent-2: #7cc4ff;
+  --accent-3: #ff7eb6;
+  --glow: 212,255,60;
+  --error: #ff5e5e;
+}
+[data-theme="light"] {
+  --bg: #f6f5f0;
+  --bg-elev: #ffffff;
+  --surface: rgba(0,0,0,0.03);
+  --surface-strong: rgba(0,0,0,0.05);
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.16);
+  --text: #0a0a0c;
+  --text-dim: #46464d;
+  --text-mute: #7d7d85;
+  --accent: #1a1a1a;
+  --accent-2: #2563eb;
+  --accent-3: #ec4899;
+  --glow: 26,26,26;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  line-height: 1.5;
+  transition: background .4s ease, color .4s ease;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ambient background */
+.ambient {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+.ambient::before {
+  content: ''; position: absolute; inset: -20%;
+  background:
+    radial-gradient(60% 50% at 15% 20%, rgba(212,255,60,0.18) 0%, transparent 60%),
+    radial-gradient(50% 40% at 85% 30%, rgba(124,196,255,0.16) 0%, transparent 60%),
+    radial-gradient(55% 45% at 50% 90%, rgba(255,126,182,0.12) 0%, transparent 60%);
+  filter: blur(40px);
+  animation: drift 24s ease-in-out infinite;
+}
+[data-theme="light"] .ambient::before {
+  background:
+    radial-gradient(60% 50% at 15% 20%, rgba(37,99,235,0.10) 0%, transparent 60%),
+    radial-gradient(50% 40% at 85% 30%, rgba(236,72,153,0.08) 0%, transparent 60%);
+}
+.ambient::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.45 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.08; mix-blend-mode: overlay;
+}
+@keyframes drift {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(3%, -2%) scale(1.05); }
+  66% { transform: translate(-2%, 3%) scale(0.98); }
+}
+.grid-overlay {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  opacity: 0.5;
+}
+
+/* Navbar */
+.nav-wrap {
+  position: fixed; top: 18px; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: center; padding: 0 20px;
+}
+.nav {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 8px 8px 20px;
+  background: rgba(13,13,18,0.55);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border-strong);
+  border-radius: 100px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+[data-theme="light"] .nav {
+  background: rgba(255,255,255,0.7);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8);
+}
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--display); font-size: 22px; letter-spacing: -0.02em;
+  text-decoration: none; color: var(--text);
+}
+.brand-mark {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: conic-gradient(from 220deg, var(--accent), var(--accent-2), var(--accent-3), var(--accent));
+  position: relative; flex-shrink: 0;
+}
+.brand-mark::after {
+  content: ''; position: absolute; inset: 4px; border-radius: 3px;
+  background: var(--bg-elev);
+}
+.nav-actions { display: flex; gap: 6px; margin-left: 14px; }
+.theme-toggle, .nav-cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface); color: var(--text);
+  padding: 9px 16px; border-radius: 100px; font-size: 13.5px; font-weight: 500;
+  cursor: pointer; transition: all .25s ease; font-family: inherit;
+  text-decoration: none;
+}
+.theme-toggle { width: 38px; height: 38px; padding: 0; }
+.theme-toggle:hover, .nav-cta:hover {
+  background: var(--surface-strong);
+  transform: translateY(-1px);
+}
+.nav-cta.primary {
+  background: var(--text); color: var(--bg);
+  border-color: var(--text);
+}
+.nav-cta.primary:hover {
+  box-shadow: 0 0 0 6px rgba(var(--glow),0.14);
+}
+
+/* Main content */
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 20px 60px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Auth card */
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(13,13,18,0.6);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid var(--border-strong);
+  border-radius: 28px;
+  padding: 48px 44px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+  animation: rise .8s .1s both;
+}
+[data-theme="light"] .auth-card {
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--display); font-size: 24px; letter-spacing: -0.02em;
+  margin-bottom: 32px;
+}
+
+.auth-heading {
+  font-family: var(--display);
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.auth-heading em { font-style: italic; color: var(--text-dim); }
+.auth-sub { font-size: 14px; color: var(--text-dim); margin-bottom: 32px; }
+
+/* Social button */
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 20px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .25s ease;
+  margin-bottom: 24px;
+}
+.social-btn:hover {
+  background: var(--surface-strong);
+  border-color: rgba(255,255,255,0.2);
+  transform: translateY(-1px);
+}
+[data-theme="light"] .social-btn:hover { border-color: rgba(0,0,0,0.2); }
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 24px;
+  font-size: 12px; font-family: var(--mono);
+  color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.1em;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* Form */
+.form-group { margin-bottom: 16px; }
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: all .25s ease;
+}
+.form-input::placeholder { color: var(--text-mute); }
+.form-input:focus {
+  border-color: rgba(var(--glow), 0.5);
+  box-shadow: 0 0 0 3px rgba(var(--glow), 0.1);
+  background: var(--surface-strong);
+}
+[data-theme="light"] .form-input { background: rgba(255,255,255,0.8); }
+[data-theme="light"] .form-input:focus { border-color: rgba(26,26,26,0.4); box-shadow: 0 0 0 3px rgba(26,26,26,0.08); }
+
+/* Password wrapper */
+.pw-wrap { position: relative; }
+.pw-toggle {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--text-mute); padding: 4px;
+  transition: color .2s;
+}
+.pw-toggle:hover { color: var(--text); }
+
+/* Row utility */
+.form-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px;
+}
+.remember {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13.5px; color: var(--text-dim); cursor: pointer;
+}
+.remember input[type="checkbox"] {
+  width: 16px; height: 16px; border-radius: 4px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.forgot-link {
+  font-size: 13.5px;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color .2s;
+}
+.forgot-link:hover { color: var(--text); }
+
+/* Submit button */
+.btn-submit {
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: 12px;
+  border: none;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .25s cubic-bezier(.2,.8,.2,1);
+  position: relative; overflow: hidden;
+  margin-bottom: 24px;
+}
+.btn-submit::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(var(--glow),0.4) 50%, transparent 70%);
+  transform: translateX(-100%); transition: transform .6s ease;
+}
+.btn-submit:hover::before { transform: translateX(100%); }
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(var(--glow),0.2);
+}
+
+/* Switch link */
+.switch-link {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+.switch-link a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity .2s;
+}
+.switch-link a:hover { opacity: 0.7; }
+
+/* Footer note */
+.auth-footer-note {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.6;
+}
+.auth-footer-note a {
+  color: var(--text-dim);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Error state */
+.form-input.error { border-color: var(--error); }
+.form-error {
+  font-size: 12px; color: var(--error);
+  margin-top: 6px; display: none;
+}
+.form-error.show { display: block; }
+
+@media (max-width: 480px) {
+  .auth-card { padding: 36px 28px; border-radius: 20px; }
+  .main { padding: 100px 16px 40px; }
+}
+</style>
+</head>
+<body>
+
+<div class="ambient"></div>
+<div class="grid-overlay"></div>
+
+<!-- NAVBAR -->
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="index.html" class="brand">
+      <div class="brand-mark"></div>
+      Nexus
+    </a>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg id="iconMoon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="iconSun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <a href="signup.html" class="nav-cta primary">Create account →</a>
+    </div>
+  </nav>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <div class="brand-mark"></div>
+      Nexus
+    </div>
+
+    <h1 class="auth-heading">Welcome <em>back.</em></h1>
+    <p class="auth-sub">Sign in to your Nexus account to continue.</p>
+
+    <!-- Google sign-in -->
+    <button class="social-btn" id="googleBtn">
+      <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Continue with Google
+    </button>
+
+    <div class="divider">or</div>
+
+    <!-- Email/password form -->
+    <form id="signinForm" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="email">Email address</label>
+        <input type="email" id="email" class="form-input" placeholder="you@company.com" autocomplete="email" />
+        <div class="form-error" id="emailError">Please enter a valid email address.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="password" class="form-input" placeholder="••••••••••" autocomplete="current-password" />
+          <button type="button" class="pw-toggle" id="pwToggle" aria-label="Toggle password visibility">
+            <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="form-error" id="passwordError">Password is required.</div>
+      </div>
+
+      <div class="form-row">
+        <label class="remember">
+          <input type="checkbox" id="rememberMe" />
+          Remember me
+        </label>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">Sign in →</button>
+    </form>
+
+    <p class="switch-link">Don't have an account? <a href="signup.html">Start for free</a></p>
+
+    <p class="auth-footer-note">
+      By signing in, you agree to our
+      <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+    </p>
+  </div>
+</main>
+
+<script>
+// ── localStorage helpers ───────────────────────
+function getUsers()   { return JSON.parse(localStorage.getItem('nx_users')   || '{}'); }
+function getSession() { return JSON.parse(localStorage.getItem('nx_session') || 'null'); }
+function setSession(u){ localStorage.setItem('nx_session', JSON.stringify(u)); }
+
+// Already logged in → dashboard
+if (getSession()) window.location.href = 'dashboard.html';
+
+// Theme toggle
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  document.getElementById('iconMoon').style.display = next === 'dark' ? '' : 'none';
+  document.getElementById('iconSun').style.display  = next === 'dark' ? 'none' : '';
+});
+
+// Google button
+document.getElementById('googleBtn').addEventListener('click', () => {
+  showError('Google sign-in requires Firebase setup. Please use email & password below.');
+});
+
+// Password toggle
+const pwToggle = document.getElementById('pwToggle');
+const pwInput  = document.getElementById('password');
+pwToggle.addEventListener('click', () => {
+  const isHidden = pwInput.type === 'password';
+  pwInput.type = isHidden ? 'text' : 'password';
+  pwToggle.innerHTML = isHidden
+    ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+    : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+});
+
+// Error display
+function showError(msg) {
+  let el = document.getElementById('globalErr');
+  if (!el) {
+    el = document.createElement('p');
+    el.id = 'globalErr';
+    el.style.cssText = 'font-size:13px;color:#ff5e5e;text-align:center;margin-bottom:12px;padding:10px;background:rgba(255,94,94,0.08);border-radius:10px;border:1px solid rgba(255,94,94,0.2);';
+    document.getElementById('submitBtn').insertAdjacentElement('beforebegin', el);
+  }
+  el.textContent = msg;
+}
+
+// Form submit
+const form       = document.getElementById('signinForm');
+const emailInput = document.getElementById('email');
+const emailError = document.getElementById('emailError');
+const passwordError = document.getElementById('passwordError');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  let valid = true;
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+    emailInput.classList.add('error'); emailError.classList.add('show'); valid = false;
+  } else { emailInput.classList.remove('error'); emailError.classList.remove('show'); }
+
+  if (!pwInput.value) {
+    pwInput.classList.add('error'); passwordError.classList.add('show'); valid = false;
+  } else { pwInput.classList.remove('error'); passwordError.classList.remove('show'); }
+
+  if (!valid) return;
+
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = 'Signing in…'; btn.disabled = true;
+
+  const users = getUsers();
+  const email = emailInput.value.trim();
+  const user  = users[email];
+
+  if (!user) {
+    showError('No account found with this email.'); btn.textContent = 'Sign in →'; btn.disabled = false; return;
+  }
+  if (user.password !== pwInput.value) {
+    showError('Incorrect password. Please try again.'); btn.textContent = 'Sign in →'; btn.disabled = false; return;
+  }
+
+  setSession({ uid: user.uid, name: user.name, email, plan: user.plan || 'Free' });
+  window.location.href = 'dashboard.html';
+});
+
+[emailInput, pwInput].forEach(el => el.addEventListener('input', () => {
+  el.classList.remove('error');
+  const errEl = document.getElementById(el.id + 'Error');
+  if (errEl) errEl.classList.remove('show');
+}));
+
+// Ambient parallax
+window.addEventListener('mousemove', e => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 10;
+  const y = (e.clientY / window.innerHeight - 0.5) * 10;
+  document.querySelector('.ambient').style.transform = `translate(${x}px, ${y}px)`;
+});
+</script>
+</body>
+</html>

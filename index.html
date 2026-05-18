@@ -1,0 +1,594 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nexus — The Operating Layer for Intelligent Software</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+<div class="ambient"></div>
+<div class="grid-overlay"></div>
+
+<!-- NAVBAR -->
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="index.html" class="brand">
+      <div class="brand-mark"></div>
+      Nexus
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#features">Platform</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#demo">Demo</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#testimonials">Customers</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg id="iconMoon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="iconSun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <button class="mobile-toggle theme-toggle" id="mobileToggle" aria-label="Menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <a href="signin.html" class="nav-cta desktop" id="navSignIn">Sign in</a>
+      <a href="signup.html" class="nav-cta primary desktop" id="navStartFree">Start free →</a>
+      <a href="dashboard.html" class="nav-cta primary desktop" id="navDashboard" style="display:none">Dashboard →</a>
+    </div>
+  </nav>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container">
+    <div class="eyebrow">
+      <span class="dot"></span>
+      <span>NEXUS 3.0 / NOW IN GENERAL AVAILABILITY</span>
+    </div>
+    <h1>The <em>operating layer</em><br>for intelligent software.</h1>
+    <p>Nexus is the inference platform behind teams shipping production-grade AI. One API for every model, every workflow, every scale — without the sharp edges.</p>
+    <div class="hero-actions">
+      <a href="signup.html" class="btn btn-primary">
+        Start building free
+        <svg class="arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#demo" class="btn btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="3,2 11,7 3,12" fill="currentColor"/></svg>
+        Try live demo
+      </a>
+    </div>
+
+    <!-- Terminal mockup -->
+    <div class="hero-visual">
+      <div class="terminal">
+        <div class="terminal-header">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span>~/nexus · production</span>
+        </div>
+        <div class="terminal-body">
+<span class="prompt">$</span> <span class="cmd">nexus deploy</span> <span class="out">--model anthem-pro --region global</span><br>
+<span class="out">→ Building inference graph........... <span style="color:var(--accent)">✓ ready</span></span><br>
+<span class="out">→ Routing across 14 regions......... <span style="color:var(--accent)">✓ live</span></span><br>
+<span class="out">→ Streaming endpoint provisioned</span><br><br>
+<span class="prompt">$</span> <span class="cmd">curl</span> <span class="str">https://api.nexus.ai/v1/chat</span> \<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-H <span class="str">"Authorization: Bearer $NEXUS_KEY"</span> \<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-d <span class="str">'{ "model": "anthem-pro", "messages": [...] }'</span><br><br>
+<span class="out">{ <span class="key">"latency_ms"</span>: <span class="str">142</span>, <span class="key">"tokens"</span>: <span class="str">1840</span> }<span class="cursor"></span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo strip -->
+    <div class="logos">
+      <div class="logos-label">Trusted by teams shipping at scale</div>
+      <div class="logos-row">
+        <span>Lumen</span>
+        <span>Vector</span>
+        <span>Hyperloop</span>
+        <span>Orbital</span>
+        <span>Quanta</span>
+        <span>Mercurial</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-tag">Platform</div>
+      <h2>Everything you need.<br><em>Nothing you don't.</em></h2>
+      <p>One unified runtime that handles routing, caching, evaluation, and observability — so your team can focus on what actually ships.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature feature-large reveal">
+        <div>
+          <div class="feature-icon">◈</div>
+          <h3>Unified inference graph</h3>
+          <p>Route requests across 40+ frontier models with a single contract. Failover, fallback, and load-balance — automatically.</p>
+        </div>
+        <div class="feature-visual">
+          <div class="orbit">
+            <div class="orbit-dot"></div>
+            <div class="orbit-dot"></div>
+            <div class="orbit-core"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature feature-small reveal">
+        <div>
+          <div class="feature-icon">↗</div>
+          <h3>Real-time evals</h3>
+          <p>Score, compare, and ship with confidence. Test against your golden set on every deploy.</p>
+        </div>
+        <div class="feature-visual">
+          <div class="bars">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature feature-third reveal">
+        <div>
+          <div class="feature-icon">⌘</div>
+          <h3>SDKs everywhere</h3>
+          <p>Python, TypeScript, Go, Rust, and Swift. Drop-in compatible with OpenAI and Anthropic clients.</p>
+        </div>
+        <div class="feature-visual">
+          <div class="code-mini">
+<span class="com">// One line. Any model.</span><br>
+<span class="key">await</span> nexus.chat({<br>
+&nbsp;&nbsp;model: <span class="str">"anthem-pro"</span>,<br>
+&nbsp;&nbsp;stream: <span class="key">true</span><br>
+})
+          </div>
+        </div>
+      </div>
+
+      <div class="feature feature-third reveal">
+        <div>
+          <div class="feature-icon">◐</div>
+          <h3>Edge-cached</h3>
+          <p>Semantic caching cuts cost up to 70%. Cold-start latency stays under 80ms globally.</p>
+        </div>
+        <div class="feature-visual">
+          <svg width="100%" height="120" viewBox="0 0 240 120" fill="none">
+            <path d="M10 90 Q 60 30, 120 60 T 230 40" stroke="var(--accent)" stroke-width="2" fill="none" opacity="0.9"/>
+            <path d="M10 100 Q 60 80, 120 85 T 230 75" stroke="var(--accent-2)" stroke-width="2" fill="none" opacity="0.6"/>
+            <circle cx="230" cy="40" r="4" fill="var(--accent)"/>
+            <circle cx="230" cy="75" r="4" fill="var(--accent-2)"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="feature feature-third reveal">
+        <div>
+          <div class="feature-icon">◇</div>
+          <h3>SOC 2 + HIPAA</h3>
+          <p>Enterprise-grade by default. Bring your own keys, private networking, zero-retention mode.</p>
+        </div>
+        <div class="feature-visual">
+          <svg width="80" height="100" viewBox="0 0 80 100" fill="none">
+            <path d="M40 5 L70 20 V50 C70 70 55 85 40 95 C25 85 10 70 10 50 V20 Z" stroke="var(--accent)" stroke-width="1.5" fill="rgba(212,255,60,0.08)"/>
+            <path d="M28 50 L36 58 L54 40" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats reveal">
+      <div class="stat">
+        <div class="stat-num"><em>99.99</em>%</div>
+        <div class="stat-label">Uptime SLA, measured globally</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">142<em>ms</em></div>
+        <div class="stat-label">Median time-to-first-token</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">40<em>+</em></div>
+        <div class="stat-label">Models on a single contract</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num"><em>4.2</em>B</div>
+        <div class="stat-label">Tokens served daily</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-tag">How it works</div>
+      <h2>Up and running<br><em>in minutes.</em></h2>
+      <p>No complex setup, no lengthy onboarding. Three steps from signup to production.</p>
+    </div>
+
+    <div class="steps-grid reveal">
+
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-icon">🔑</div>
+        <h3 class="step-title">Get your API key</h3>
+        <p class="step-desc">Sign up free, grab your key from the dashboard. No credit card, no approval process. Ready in 30 seconds.</p>
+        <div class="step-code">
+          <span class="sc-key">NEXUS_KEY</span>=<span class="sc-str">"nx_live_xk9f2..."</span>
+        </div>
+      </div>
+
+      <div class="step-arrow">→</div>
+
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-icon">⚡</div>
+        <h3 class="step-title">Send your first request</h3>
+        <p class="step-desc">Drop-in compatible with OpenAI SDK. Change one base URL — existing code works untouched. Switch models with a single line.</p>
+        <div class="step-code">
+          <span class="sc-key">model</span>: <span class="sc-str">"anthem-pro"</span> <span class="sc-com">// or any of 40+</span>
+        </div>
+      </div>
+
+      <div class="step-arrow">→</div>
+
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-icon">🚀</div>
+        <h3 class="step-title">Ship to production</h3>
+        <p class="step-desc">Monitor latency, token usage, and model performance from your dashboard. Auto-failover keeps you live 99.99% of the time.</p>
+        <div class="step-code">
+          <span class="sc-key">uptime</span>: <span class="sc-str">99.99%</span> <span class="sc-com">// guaranteed</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Integration logos -->
+    <div class="integrations reveal">
+      <div class="int-label">Works with your existing stack</div>
+      <div class="int-row">
+        <div class="int-chip">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+          Python SDK
+        </div>
+        <div class="int-chip">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+          TypeScript SDK
+        </div>
+        <div class="int-chip">OpenAI compatible</div>
+        <div class="int-chip">Anthropic compatible</div>
+        <div class="int-chip">REST API</div>
+        <div class="int-chip">Go SDK</div>
+        <div class="int-chip">Rust SDK</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DEMO -->
+<section id="demo">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-tag">Live demo</div>
+      <h2>Try it <em>right now.</em></h2>
+      <p>No signup needed. Send a real request and see the response — powered by Nexus routing.</p>
+    </div>
+
+    <div class="demo-wrap reveal">
+      <!-- Model selector -->
+      <div class="demo-top">
+        <div class="demo-model-row">
+          <span class="demo-label">Model</span>
+          <div class="model-tabs" id="modelTabs">
+            <button class="model-tab active" data-model="anthem-pro">Anthem Pro</button>
+            <button class="model-tab" data-model="anthem-mini">Anthem Mini</button>
+            <button class="model-tab" data-model="lumina-7b">Lumina 7B</button>
+            <button class="model-tab" data-model="orion-32b">Orion 32B</button>
+          </div>
+        </div>
+        <div class="demo-meta">
+          <span class="meta-pill" id="metaLatency">— ms</span>
+          <span class="meta-pill" id="metaTokens">— tokens</span>
+          <span class="meta-pill green" id="metaStatus">Ready</span>
+        </div>
+      </div>
+
+      <!-- Chat area -->
+      <div class="demo-chat" id="demoChat">
+        <div class="demo-empty">
+          <div class="demo-empty-icon">◈</div>
+          <p>Type a message below and hit Send — or try one of the examples.</p>
+        </div>
+      </div>
+
+      <!-- Quick prompts -->
+      <div class="quick-prompts" id="quickPrompts">
+        <button class="qp-btn" onclick="usePrompt(this)">Explain quantum computing simply</button>
+        <button class="qp-btn" onclick="usePrompt(this)">Write a Python function to reverse a string</button>
+        <button class="qp-btn" onclick="usePrompt(this)">What is the Nexus inference platform?</button>
+        <button class="qp-btn" onclick="usePrompt(this)">Summarize the key benefits of edge caching</button>
+      </div>
+
+      <!-- Input row -->
+      <div class="demo-input-row">
+        <input
+          type="text"
+          class="demo-input"
+          id="demoInput"
+          placeholder="Ask anything… e.g. 'Write a haiku about AI'"
+          autocomplete="off"
+        />
+        <button class="demo-send" id="demoSend" onclick="sendDemo()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send
+        </button>
+      </div>
+      <p class="demo-note">This is a simulated demo. <a href="signup.html">Sign up</a> for real API access.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-tag">Pricing</div>
+      <h2>Pay for tokens.<br><em>Not for promises.</em></h2>
+      <p>Transparent, usage-based pricing. No seat licenses, no overage surprises, no enterprise gating on features that should be standard.</p>
+    </div>
+
+    <div class="reveal" style="margin-bottom:8px">
+      <div class="billing-toggle">
+        <button class="active" data-billing="monthly">Monthly</button>
+        <button data-billing="yearly">Yearly <span class="save">−20%</span></button>
+      </div>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="plan reveal">
+        <div class="plan-name">Hobby</div>
+        <div class="plan-price"><span class="currency">$</span><span class="amount" data-monthly="0" data-yearly="0">0</span></div>
+        <p class="plan-desc">For prototyping and side projects. Generous free tier, no credit card.</p>
+        <ul>
+          <li>1M tokens / month included</li>
+          <li>Access to 8 open models</li>
+          <li>Community Discord support</li>
+          <li>Rate-limited at 60 RPM</li>
+        </ul>
+        <button onclick="openModal('hobby')" class="btn btn-ghost" style="border:none;cursor:pointer;">Start free</button>
+      </div>
+
+      <div class="plan featured reveal">
+        <div class="plan-badge">Most popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><span class="currency">$</span><span class="amount" data-monthly="49" data-yearly="39">49</span><span class="per">/mo</span></div>
+        <p class="plan-desc">For teams shipping production AI. Everything you need to scale to millions of users.</p>
+        <ul>
+          <li>50M tokens / month included</li>
+          <li>All 40+ models, including frontier</li>
+          <li>Semantic caching + edge routing</li>
+          <li>Real-time evals & A/B testing</li>
+          <li>Priority support, 4hr response</li>
+          <li>SOC 2 Type II reports</li>
+        </ul>
+        <button onclick="openModal('pro')" class="btn btn-primary" style="border:none;cursor:pointer;">Start 14-day trial</button>
+      </div>
+
+      <div class="plan reveal">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price"><span style="font-size:48px">Custom</span></div>
+        <p class="plan-desc">For organizations with bespoke compliance, dedicated capacity, or custom deployment needs.</p>
+        <ul>
+          <li>Unlimited tokens + dedicated GPUs</li>
+          <li>Private VPC + on-prem deployment</li>
+          <li>HIPAA, FedRAMP, ISO 27001</li>
+          <li>Custom SLAs up to 99.999%</li>
+          <li>Named engineer + 24/7 hotline</li>
+        </ul>
+        <button onclick="openModal('enterprise')" class="btn btn-ghost" style="border:none;cursor:pointer;">Talk to sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-tag">Customers</div>
+      <h2>The teams shipping<br><em>the future, today.</em></h2>
+      <p>From seed-stage startups to public companies, Nexus is the inference layer behind the products you already use.</p>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="quote reveal">
+        <div class="quote-body">"We cut our inference bill by 64% in a single afternoon. The router just <em>works</em>. Migration took less time than the procurement call."</div>
+        <div class="quote-author">
+          <div class="avatar">M</div>
+          <div class="author-info">
+            <strong>Mira Chen</strong>
+            <span>CTO, Lumen Health</span>
+          </div>
+        </div>
+      </div>
+      <div class="quote reveal">
+        <div class="quote-body">"Three frontier models, one contract, one bill, one dashboard. This is what every AI platform should have looked like from day one."</div>
+        <div class="quote-author">
+          <div class="avatar">D</div>
+          <div class="author-info">
+            <strong>Daniel Okonkwo</strong>
+            <span>VP Engineering, Vector</span>
+          </div>
+        </div>
+      </div>
+      <div class="quote reveal">
+        <div class="quote-body">"The evals dashboard caught a regression that would have shipped to 800k users. That alone paid for the platform for the next decade."</div>
+        <div class="quote-author">
+          <div class="avatar">S</div>
+          <div class="author-info">
+            <strong>Sasha Rivera</strong>
+            <span>Head of AI, Hyperloop</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="faq-layout">
+      <div class="section-head reveal" style="margin-bottom:0">
+        <div class="section-tag">FAQ</div>
+        <h2>Questions,<br><em>answered.</em></h2>
+        <p>Can't find what you're looking for? Our team replies to every email within four hours.</p>
+        <a href="mailto:support@nexus.ai" class="btn btn-ghost" style="margin-top:24px">
+          Contact support
+          <svg class="arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <div class="faq-list reveal">
+        <div class="faq-item open">
+          <div class="faq-q">
+            <span>How is Nexus different from calling models directly?</span>
+            <div class="faq-toggle">+</div>
+          </div>
+          <div class="faq-a">One contract for forty models, automatic failover when providers go down, semantic caching that cuts cost by up to 70%, and observability that actually tells you what your prompts are doing. You can switch from GPT to Claude to Llama with a config change — no rewrites.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">
+            <span>Do you store my prompts or responses?</span>
+            <div class="faq-toggle">+</div>
+          </div>
+          <div class="faq-a">By default we retain logs for 30 days for debugging. Pro and Enterprise plans support zero-retention mode, where requests are processed in-memory and never persisted. We never train on your data.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">
+            <span>Can I bring my own API keys?</span>
+            <div class="faq-toggle">+</div>
+          </div>
+          <div class="faq-a">Yes. Bring your own OpenAI, Anthropic, or self-hosted keys and Nexus becomes pure infrastructure — routing, caching, observability — on top of your existing accounts.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">
+            <span>What's the migration story?</span>
+            <div class="faq-toggle">+</div>
+          </div>
+          <div class="faq-a">Change one base URL. Our SDK is wire-compatible with OpenAI and Anthropic clients, so existing code works untouched. Most customers migrate in under an hour.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">
+            <span>How does billing work for token overages?</span>
+            <div class="faq-toggle">+</div>
+          </div>
+          <div class="faq-a">Pay-as-you-go beyond your plan's included tokens at the model's published rate — no markup. Set hard caps in the dashboard to never get surprised.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">
+            <span>Is there a free tier for students or open source?</span>
+            <div class="faq-toggle">+</div>
+          </div>
+          <div class="faq-a">Yes. Verified open-source maintainers and accredited students get 25M free tokens monthly, with access to all frontier models. Apply through the Hobby plan signup.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-card reveal">
+      <h2>Start shipping <em>intelligent</em><br>software, today.</h2>
+      <p>Free forever for the first million tokens. No credit card, no demo call, no enterprise gating.</p>
+      <div class="cta-actions">
+        <a href="signup.html" class="btn btn-primary">
+          Get started free
+          <svg class="arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#faq" class="btn btn-ghost">Read the docs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand" style="border-right:none;padding-right:0;">
+          <div class="brand-mark"></div>
+          Nexus
+        </a>
+        <p>The operating layer for intelligent software. Built in San Francisco, available everywhere.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#features">Models</a></li>
+          <li><a href="#features">Inference</a></li>
+          <li><a href="#features">Evals</a></li>
+          <li><a href="#features">Caching</a></li>
+          <li><a href="#features">Changelog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#testimonials">About</a></li>
+          <li><a href="mailto:careers@nexus.ai">Careers</a></li>
+          <li><a href="#testimonials">Customers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Brand</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#faq">Documentation</a></li>
+          <li><a href="#faq">API reference</a></li>
+          <li><a href="#">Status</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Nexus Labs, Inc. All rights reserved.</span>
+      <div class="legal">
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+        <a href="#">Cookies</a>
+        <a href="#">DPA</a>
+      </div>
+    </div>
+    <div class="mega-brand">nexus</div>
+  </div>
+</footer>
+
+<!-- PLAN MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card" id="modalCard">
+    <button class="modal-close" id="modalClose" aria-label="Close">&#x2715;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>

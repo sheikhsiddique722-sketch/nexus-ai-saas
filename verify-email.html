@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Verify Email — Nexus</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --display:'Instrument Serif',serif; --sans:'Geist',-apple-system,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --bg:#07070a; --bg-elev:#0d0d12;
+  --surface:rgba(255,255,255,0.04); --surface-strong:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.14);
+  --text:#f5f5f7; --text-dim:#a1a1aa; --text-mute:#6b6b75;
+  --accent:#d4ff3c; --accent-2:#7cc4ff; --accent-3:#ff7eb6; --glow:212,255,60;
+}
+[data-theme="light"] {
+  --bg:#f6f5f0; --bg-elev:#ffffff;
+  --surface:rgba(0,0,0,0.03); --surface-strong:rgba(0,0,0,0.05);
+  --border:rgba(0,0,0,0.08); --border-strong:rgba(0,0,0,0.16);
+  --text:#0a0a0c; --text-dim:#46464d; --text-mute:#7d7d85;
+  --accent:#1a1a1a; --accent-2:#2563eb; --glow:26,26,26;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--sans); background:var(--bg); color:var(--text);
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:20px; transition:background .3s,color .3s;
+}
+.ambient{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+}
+.ambient::before{
+  content:'';position:absolute;inset:-20%;
+  background:radial-gradient(60% 50% at 50% 30%,rgba(124,196,255,0.18) 0%,transparent 60%),
+             radial-gradient(50% 40% at 20% 70%,rgba(212,255,60,0.14) 0%,transparent 60%);
+  filter:blur(40px);animation:drift 20s ease-in-out infinite;
+}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(2%,-2%)}}
+
+.card{
+  position:relative;z-index:2;
+  background:rgba(13,13,18,0.7);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid var(--border-strong);
+  border-radius:28px; padding:52px 44px; max-width:460px; width:100%;
+  text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,0.4);
+  animation:rise .7s ease both;
+}
+[data-theme="light"] .card{background:rgba(255,255,255,0.85);}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.brand{
+  display:flex;align-items:center;gap:10px;justify-content:center;
+  font-family:var(--display);font-size:22px;letter-spacing:-.02em;
+  text-decoration:none;color:var(--text);margin-bottom:36px;
+}
+.brand-mark{
+  width:22px;height:22px;border-radius:6px;
+  background:conic-gradient(from 220deg,var(--accent),var(--accent-2),var(--accent-3),var(--accent));
+  position:relative;flex-shrink:0;
+}
+.brand-mark::after{content:'';position:absolute;inset:4px;border-radius:3px;background:var(--bg-elev);}
+
+/* Email icon */
+.email-icon-wrap{
+  width:80px;height:80px;border-radius:50%;margin:0 auto 28px;
+  background:rgba(124,196,255,0.1);border:1.5px solid rgba(124,196,255,0.25);
+  display:flex;align-items:center;justify-content:center;
+  animation:pop .5s .2s cubic-bezier(.2,1.4,.4,1) both;
+}
+@keyframes pop{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
+
+.heading{
+  font-family:var(--display);font-size:34px;font-weight:400;
+  letter-spacing:-.025em;line-height:1.1;margin-bottom:12px;
+}
+.heading em{font-style:italic;color:var(--accent-2);}
+.sub{font-size:15px;color:var(--text-dim);line-height:1.65;margin-bottom:8px;}
+.email-shown{
+  font-family:var(--mono);font-size:13px;color:var(--accent);
+  background:rgba(212,255,60,0.08);border:1px solid rgba(212,255,60,0.2);
+  padding:6px 14px;border-radius:100px;display:inline-block;margin-bottom:32px;
+}
+
+/* Steps */
+.steps{
+  display:flex;flex-direction:column;gap:12px;
+  text-align:left;margin-bottom:32px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:18px 20px;
+}
+.step-row{display:flex;gap:12px;align-items:flex-start;}
+.step-num{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  background:rgba(var(--glow),.12);border:1px solid rgba(var(--glow),.25);
+  font-family:var(--mono);font-size:10px;color:var(--accent);
+  display:grid;place-items:center;margin-top:1px;
+}
+.step-txt{font-size:13.5px;color:var(--text-dim);line-height:1.5;}
+.step-txt strong{color:var(--text);}
+
+/* Buttons */
+.btn-primary{
+  width:100%;padding:14px;border-radius:14px;
+  background:var(--text);color:var(--bg);
+  border:none;font-size:15px;font-weight:600;font-family:inherit;
+  cursor:pointer;transition:all .25s ease;margin-bottom:12px;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(var(--glow),.2);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+.btn-ghost{
+  width:100%;padding:12px;border-radius:14px;
+  background:var(--surface);color:var(--text-dim);
+  border:1px solid var(--border-strong);font-size:14px;font-family:inherit;
+  cursor:pointer;transition:all .2s ease;margin-bottom:16px;
+}
+.btn-ghost:hover{background:var(--surface-strong);color:var(--text);}
+
+.links{font-size:13px;color:var(--text-mute);}
+.links a{color:var(--text-dim);text-decoration:none;margin:0 6px;}
+.links a:hover{color:var(--text);}
+
+/* Status pill */
+.status-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 12px;border-radius:100px;font-family:var(--mono);font-size:11px;
+  margin-top:12px;
+}
+.status-pill.checking{
+  background:rgba(212,255,60,.08);border:1px solid rgba(212,255,60,.2);color:var(--accent);
+}
+.status-pill.verified{
+  background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e;
+}
+.pulse{width:6px;height:6px;border-radius:50%;background:currentColor;animation:blink 1.2s steps(2) infinite;}
+@keyframes blink{50%{opacity:0}}
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+
+<div class="card">
+  <a href="index.html" class="brand">
+    <div class="brand-mark"></div>
+    Nexus
+  </a>
+
+  <div class="email-icon-wrap">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#7cc4ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+      <polyline points="22,6 12,13 2,6"/>
+    </svg>
+  </div>
+
+  <h1 class="heading">Check your <em>inbox.</em></h1>
+  <p class="sub">We sent a verification link to</p>
+  <div class="email-shown" id="userEmail">your email</div>
+
+  <div class="steps">
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-txt">Open the email from <strong>Nexus (noreply@nexus.ai)</strong></div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-txt">Click <strong>"Verify email address"</strong> in the email</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-txt">Come back here and click <strong>"I've verified →"</strong></div>
+    </div>
+  </div>
+
+  <button class="btn-primary" id="verifiedBtn" onclick="checkVerified()">
+    I've verified — Go to Dashboard →
+  </button>
+
+  <button class="btn-ghost" id="resendBtn" onclick="resendEmail()">
+    Resend verification email
+  </button>
+
+  <div class="links">
+    <a href="signin.html">← Back to sign in</a>
+    ·
+    <a href="mailto:support@nexus.ai">Need help?</a>
+  </div>
+
+  <div class="status-pill checking" id="statusPill" style="display:none">
+    <span class="pulse"></span>
+    <span id="statusText">Checking…</span>
+  </div>
+</div>
+
+<script>
+// localStorage-based — no Firebase needed
+const _next = new URLSearchParams(window.location.search).get('next') || '';
+const _afterVerified = _next === 'demo' ? 'index.html#demo' : 'dashboard.html';
+
+const session = JSON.parse(localStorage.getItem('nx_session') || 'null');
+if (!session) { window.location.href = 'signin.html'; }
+else { document.getElementById('userEmail').textContent = session.email; }
+
+// Since we use localStorage auth (no email step), "verify" just goes straight to dashboard
+function checkVerified() {
+  if (!session) return;
+  const btn  = document.getElementById('verifiedBtn');
+  const pill = document.getElementById('statusPill');
+  btn.disabled = true;
+  btn.textContent = _next === 'demo' ? '✓ Going back to demo…' : '✓ Redirecting to dashboard…';
+  pill.style.display = 'inline-flex';
+  pill.className = 'status-pill verified';
+  document.getElementById('statusText').textContent = '✓ Verified!';
+  setTimeout(() => { window.location.href = _afterVerified; }, 800);
+}
+window.checkVerified = checkVerified;
+
+// Resend — just shows a confirmation (no real email without backend)
+let cooldown = false;
+function resendEmail() {
+  if (cooldown) return;
+  const btn = document.getElementById('resendBtn');
+  btn.disabled = true;
+  btn.textContent = '✓ Done! You can proceed to dashboard';
+  cooldown = true;
+  let secs = 60;
+  const timer = setInterval(() => {
+    secs--;
+    btn.textContent = `Resend again in ${secs}s`;
+    if (secs <= 0) {
+      clearInterval(timer);
+      btn.disabled = false;
+      btn.textContent = 'Resend verification email';
+      cooldown = false;
+    }
+  }, 1000);
+}
+window.resendEmail = resendEmail;
+</script>
+</body>
+</html>
