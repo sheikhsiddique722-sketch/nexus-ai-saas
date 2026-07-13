@@ -4,7 +4,7 @@ A modern AI-powered SaaS landing page built to showcase a premium software produ
 
 This project focuses on creating a polished frontend experience inspired by modern SaaS applications, emphasizing usability, scalability, and visual consistency. AI SaaS products typically prioritize clear feature communication, conversion-focused layouts, and responsive design, which influenced this concept. 
  
-🌐 Live Demo
+🌐 Live Demo 
 
 Website:
 https://sheikhsiddique722-sketch.github.io/nexus-ai-saas/
