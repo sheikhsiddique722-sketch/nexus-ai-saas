@@ -3,7 +3,7 @@
 A modern AI-powered SaaS landing page built to showcase a premium software product experience. Nexus AI SaaS combines clean design, responsive layouts, and intuitive user flows to demonstrate how contemporary AI platforms present their products, features, and services.
 
 This project focuses on creating a polished frontend experience inspired by modern SaaS applications, emphasizing usability, scalability, and visual consistency. AI SaaS products typically prioritize clear feature communication, conversion-focused layouts, and responsive design, which influenced this concept. 
- 
+  
 🌐 Live Demo 
 
 Website:
