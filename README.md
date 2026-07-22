@@ -6,7 +6,7 @@ This project focuses on creating a polished frontend experience inspired by mode
   
 🌐 Live Demo 
 
-Website:
+Website: 
 https://sheikhsiddique722-sketch.github.io/nexus-ai-saas/
 
 ✨ Features
