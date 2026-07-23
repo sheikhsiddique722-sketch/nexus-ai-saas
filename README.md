@@ -8,7 +8,7 @@ This project focuses on creating a polished frontend experience inspired by mode
  
 Website: 
 https://sheikhsiddique722-sketch.github.io/nexus-ai-saas/
-
+ 
 ✨ Features
 Modern AI SaaS landing page
 Premium and responsive UI
